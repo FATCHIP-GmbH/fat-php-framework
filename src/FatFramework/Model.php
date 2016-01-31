@@ -48,7 +48,7 @@ class Model
     public function loadById($id) {
         $blSuccess = false;
         if ($id) {
-            $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = ".$id);
+            $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = '".$id."'");
             $oResult = mysql_fetch_object($sql);
             if (is_object($oResult)) {
                 $this->assign($oResult);
