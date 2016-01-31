@@ -5,23 +5,14 @@ namespace FatFramework;
 class Functions
 {
 
+    /**
+     * get GET or POST parameters
+     * @param string $sParam
+     * @return string $sParamValue OR false
+     */
     public static function getRequestParameter($sParam)
-    {
+        {
         $sParamValue = false;
-
-//        // handle $_GET parameter
-//        $sParamGetValue = filter_input(INPUT_GET, $sParam);
-//        if ($sParamGetValue) {
-//            $sParamValue = $sParamGetValue;
-//        }
-//
-//        // handle $_POST parameter
-//        if ($sParamValue === false) {
-//            $sParamPostValue = filter_input(INPUT_POST, $sParam);
-//            if ($sParamPostValue) {
-//                $sParamValue = $sParamPostValue;
-//            }
-//        }
         
         if (isset($_REQUEST[$sParam])) {
             $sParamValue = $_REQUEST[$sParam];
@@ -31,7 +22,9 @@ class Functions
     }
 
     /**
+     * autoloads all php files in $directoryPath (not recursive)
      * auto include all files in given directory
+     * @param string $directoryPath
      */
     public static function includeDir($directoryPath)
     {

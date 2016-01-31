@@ -4,31 +4,54 @@ namespace FatFramework;
 
 class Model
 {
+    /**
+     * copy a data row
+     * @param int $id
+     * @return int $id new ID
+     */
+    public function copy($sTableName, $id){
+        $this->loadById($sTableName, $id);
+        $this->id = null;
+        $this->save();
+        return $this->id;
+    }
+    
     public function insert($sTableName)
     {
-        $sql = "INSERT INTO " . $sTableName . " (";
-        $firstkey = true;
+        $first = true;
+        $sKeys = "";
+        $sValues = "";
         foreach ($this as $key => $value) {
-            if ($firstkey) {
-                $firstkey = false;
-                $sql .= "$key";
+            if ($first) {
+                $first = false;
             } else {
-                $sql .= ", $key";
+                $sKeys .= ", ";
+                $sValues .= ", ";
             }
+            $sKeys .= $key;
+            $sValues .= "'" . $value . "'";
         }
-        $sql .=") VALUES (";
-        $firstvalue = true;
-        foreach ($this as $key => $value) {
-            if ($firstvalue) {
-                $firstvalue = false;
-                $sql .= "'$value'";
-            } else {
-                $sql .= ", '$value'";
-            }
-        }
-        $sql .=")";
+        $sql = "INSERT INTO " . $sTableName . " (" . $sKeys . ") VALUES (" . $sValues . ")";
         mysql_query($sql);
         $this->id = mysql_insert_id();
+    }
+    
+    public function loadById($sTableName, $id) {
+        $blSuccess = false;
+        if ($sTableName && $id) {
+            $sql = mysql_query("SELECT * FROM " . $sTableName . " WHERE id = ".$id);
+            $oType = mysql_fetch_object($sql);
+            if (is_object($oType)) {
+                foreach ($oType as $key => $value) {
+                    $this->$key = $value;
+                }
+                $blSuccess = true;
+            } else {
+                echo "ERROR: Could not load " . $sTableName . " with given id: ".$id."!";
+                exit;
+            }
+        }
+        return $blSuccess;
     }
     
     public function save($sTableName)

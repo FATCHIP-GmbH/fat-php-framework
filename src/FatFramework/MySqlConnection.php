@@ -6,17 +6,21 @@ class MySqlConnection
 {
 
     /**
-     * establish connection to database
+     * establish connection to MySql database
+     * @param type $sHost
+     * @param type $sName
+     * @param type $sUser
+     * @param type $sPassword
      */
-    static function connect($projectConfiguration)
+    static function connect($sHost, $sName, $sUser, $sPassword)
     {
         // connect to database
-        $conn = @mysql_connect($projectConfiguration->databaseHost, $projectConfiguration->databaseUser, $projectConfiguration->databasePass);
+        $conn = @mysql_connect($sHost, $sUser, $sPassword);
         // select databes
-        @mysql_select_db($projectConfiguration->databaseName, $conn);
+        @mysql_select_db($sName, $conn);
         // throw error if error
         if ($conn != TRUE) {
-            echo "Verbindungsfehler: " . mysql_error() . " !! Versuchen Sie es zu einem sp&auml;teren Zeitpunkt nochmals. Danke.";
+            echo "MySQL connect error: " . mysql_error() . " !!" . PHP_EOL;
             die;
         }
     }
