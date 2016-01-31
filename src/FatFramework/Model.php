@@ -49,11 +49,9 @@ class Model
         $blSuccess = false;
         if ($id) {
             $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = ".$id);
-            $oType = mysql_fetch_object($sql);
-            if (is_object($oType)) {
-                foreach ($oType as $key => $value) {
-                    $this->$key = $value;
-                }
+            $oResult = mysql_fetch_object($sql);
+            if (is_object($oResult)) {
+                $this->assign($oResult);
                 $blSuccess = true;
             } else {
                 echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
@@ -87,6 +85,15 @@ class Model
         $sql .= "WHERE id = " . $this->id;
         
         mysql_query($sql);
+    }
+    
+    protected function assign($arrayOrObject)
+    {
+        if(is_array($arrayOrObject) || is_object($arrayOrObject)){
+            foreach ($arrayOrObject as $key => $value) {
+                $this->$key = $value;
+            }
+        }
     }
 }
 
