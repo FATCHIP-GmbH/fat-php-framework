@@ -9,14 +9,23 @@ class Model
      * @param int $id
      * @return int $id new ID
      */
-    public function copy($sTableName, $id){
-        $this->loadById($sTableName, $id);
+    public function copy($id){
+        $this->loadById($id);
         $this->id = null;
         $this->save();
         return $this->id;
     }
     
-    public function insert($sTableName)
+    /**
+     * overwrite this with your model extension
+     * @return string
+     */
+    public function getTableName()
+    {
+        return 'default';
+    }
+    
+    public function insert()
     {
         $first = true;
         $sKeys = "";
@@ -31,15 +40,15 @@ class Model
             $sKeys .= $key;
             $sValues .= "'" . $value . "'";
         }
-        $sql = "INSERT INTO " . $sTableName . " (" . $sKeys . ") VALUES (" . $sValues . ")";
+        $sql = "INSERT INTO " . $this->getTableName() . " (" . $sKeys . ") VALUES (" . $sValues . ")";
         mysql_query($sql);
         $this->id = mysql_insert_id();
     }
     
-    public function loadById($sTableName, $id) {
+    public function loadById($id) {
         $blSuccess = false;
-        if ($sTableName && $id) {
-            $sql = mysql_query("SELECT * FROM " . $sTableName . " WHERE id = ".$id);
+        if ($id) {
+            $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = ".$id);
             $oType = mysql_fetch_object($sql);
             if (is_object($oType)) {
                 foreach ($oType as $key => $value) {
@@ -47,25 +56,25 @@ class Model
                 }
                 $blSuccess = true;
             } else {
-                echo "ERROR: Could not load " . $sTableName . " with given id: ".$id."!";
+                echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
                 exit;
             }
         }
         return $blSuccess;
     }
     
-    public function save($sTableName)
+    public function save()
     {
         if ($this->id) {
-            $this->update($sTableName);
+            $this->update();
         } else {
-            $this->insert($sTableName);
+            $this->insert();
         }
     }
     
-    public function update($sTableName)
+    public function update()
     {
-        $sql = "UPDATE " . $sTableName . " SET";
+        $sql = "UPDATE " . $this->getTableName() . " SET";
         $first = true;
         foreach ($this as $property => $value) {
             if ($first) {
