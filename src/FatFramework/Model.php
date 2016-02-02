@@ -17,6 +17,16 @@ class Model
     }
     
     /**
+     * delete dataset
+     * @param type $id
+     */
+    public function delete($id)
+    {
+        $sQuery = "DELETE FROM " . $this->getTableName() . " WHERE id = '" . $id . "'";
+        mysql_query($sQuery);
+    }
+    
+    /**
      * overwrite this with your model extension
      * @return string
      */
@@ -25,6 +35,9 @@ class Model
         return 'default';
     }
     
+    /**
+     * insert new dataset
+     */
     public function insert()
     {
         $first = true;
@@ -80,6 +93,9 @@ class Model
         return $aRows;
     }
     
+    /**
+     * either insert or update dataset
+     */
     public function save()
     {
         if ($this->id) {
@@ -89,6 +105,9 @@ class Model
         }
     }
     
+    /**
+     * update dataset
+     */
     public function update()
     {
         $sql = "UPDATE " . $this->getTableName() . " SET";
