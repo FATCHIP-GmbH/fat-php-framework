@@ -61,7 +61,7 @@ class Model
         return $blSuccess;
     }
     
-    public static function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
+    public function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
     {
         $aRows = array();
         $sQuery = "SELECT id FROM " . $this->getTableName();
@@ -73,7 +73,7 @@ class Model
         }
         $sql = mysql_query($sQuery);
         while (($oRow = mysql_fetch_object($sql)) != false) {
-            $oDataset = new self;
+            $oDataset = new $this;
             $oDataset->loadById($oRow->id, $blAdditionalValues);
             $aRows[] = $oDataset;
         }
