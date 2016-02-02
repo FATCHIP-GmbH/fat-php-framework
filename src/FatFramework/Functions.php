@@ -11,13 +11,21 @@ class Functions
      * @return string $sParamValue OR false
      */
     public static function getRequestParameter($sParam)
-        {
+    {
         $sParamValue = false;
-        
+
         if (isset($_REQUEST[$sParam])) {
             $sParamValue = $_REQUEST[$sParam];
         }
-        
+
+        if (is_string($sParamValue)) {
+            $sParamValue = str_replace(
+                    array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"), 
+                    array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'), 
+                    $sParamValue
+                    );
+        }
+
         return $sParamValue;
     }
 

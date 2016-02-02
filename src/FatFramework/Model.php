@@ -11,7 +11,7 @@ class Model
      */
     public function copy($id){
         $this->loadById($id);
-        $this->id = null;
+        $this->id = false;
         $this->save();
         return $this->id;
     }
@@ -45,7 +45,7 @@ class Model
         $this->id = mysql_insert_id();
     }
     
-    public function loadById($id) {
+    public function loadById($id, $blAdditionalValues = false) {
         $blSuccess = false;
         if ($id) {
             $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = '".$id."'");
@@ -59,6 +59,25 @@ class Model
             }
         }
         return $blSuccess;
+    }
+    
+    public static function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
+    {
+        $aRows = array();
+        $sQuery = "SELECT id FROM " . $this->getTableName();
+        if ($sAdditionalWhere != false) {
+            $sQuery .= " WHERE " . $sAdditionalWhere;
+        }
+        if ($sOrderBy != false) {
+            $sQuery .= " ORDER BY " . $sOrderBy;
+        }
+        $sql = mysql_query($sQuery);
+        while (($oRow = mysql_fetch_object($sql)) != false) {
+            $oDataset = new self;
+            $oDataset->loadById($oRow->id, $blAdditionalValues);
+            $aRows[] = $oDataset;
+        }
+        return $aRows;
     }
     
     public function save()
