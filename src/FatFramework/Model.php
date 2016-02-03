@@ -58,19 +58,24 @@ class Model
         $this->id = mysql_insert_id();
     }
     
-    public function loadById($id, $blAdditionalValues = false) {
+    public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
+        
+        $sQuery = "SELECT * FROM " . $this->getTableName();
         if ($id) {
-            $sql = mysql_query("SELECT * FROM " . $this->getTableName() . " WHERE id = '".$id."'");
-            $oResult = mysql_fetch_object($sql);
-            if (is_object($oResult)) {
-                $this->assign($oResult);
-                $blSuccess = true;
-            } else {
-                echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
-                exit;
-            }
+            $sQuery .= " WHERE id = '".$id."'";
         }
+        $sQuery .= " LIMIT 1";
+        $sql = mysql_query($sQuery);
+        $oResult = mysql_fetch_object($sql);
+        if (is_object($oResult)) {
+            $this->assign($oResult);
+            $blSuccess = true;
+        } else {
+            echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
+            exit;
+        }
+        
         return $blSuccess;
     }
     
