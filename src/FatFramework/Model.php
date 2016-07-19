@@ -5,8 +5,10 @@ namespace FatFramework;
 class Model
 {
     /**
-     * copy a data row
+     * Copy a data row
+     * 
      * @param int $id
+     * 
      * @return int $id new ID
      */
     public function copy($id){
@@ -17,8 +19,11 @@ class Model
     }
     
     /**
-     * delete dataset
-     * @param type $id
+     * Delete dataset
+     * 
+     * @param string $id ID of dataset to delete
+     * 
+     * @return void
      */
     public function delete($id)
     {
@@ -27,8 +32,9 @@ class Model
     }
     
     /**
-     * overwrite this with your model extension
-     * @return string
+     * Overwrite this with your model extension
+     * 
+     * @return string Tablename
      */
     public function getTableName()
     {
@@ -36,7 +42,9 @@ class Model
     }
     
     /**
-     * insert new dataset
+     * Insert new dataset
+     * 
+     * @return void
      */
     public function insert()
     {
@@ -58,12 +66,20 @@ class Model
         $this->id = mysql_insert_id();
     }
     
+    /**
+     * Loads a dataset by its primary identifier.
+     * 
+     * @param string  $id                 ID of the dataset to load
+     * @param boolean $blAdditionalValues Load related table data true or false
+     * 
+     * @return boolean $blSuccess True or false
+     */ 
     public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
         
         $sQuery = "SELECT * FROM " . $this->getTableName();
         if ($id) {
-            $sQuery .= " WHERE id = '".$id."'";
+            $sQuery .= " WHERE id = '" . $id . "'";
         }
         $sQuery .= " LIMIT 1";
         $sql = mysql_query($sQuery);
@@ -79,6 +95,11 @@ class Model
         return $blSuccess;
     }
     
+    /**
+     * Loads an array of dataset-objects
+     * 
+     * @return array $aRows Array of dataset-objects
+     */
     public function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
     {
         $aRows = array();
@@ -99,7 +120,9 @@ class Model
     }
     
     /**
-     * either insert or update dataset
+     * Either insert or update dataset
+     * 
+     * @return void
      */
     public function save()
     {
@@ -111,7 +134,9 @@ class Model
     }
     
     /**
-     * update dataset
+     * Update dataset
+     * 
+     * @return void
      */
     public function update()
     {
@@ -125,11 +150,16 @@ class Model
                 $sql .= ", $property='".mysql_escape_string($value)."'";
             }
         }
-        $sql .= "WHERE id = " . $this->id;
+        $sql .= "WHERE id = '" . $this->id . "'";
         
         mysql_query($sql);
     }
     
+    /**
+     * Assign database result as object-properties.
+     * 
+     * @return void
+     */
     protected function assign($arrayOrObject)
     {
         if(is_array($arrayOrObject) || is_object($arrayOrObject)){
