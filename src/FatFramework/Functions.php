@@ -4,10 +4,11 @@ namespace FatFramework;
 
 class Functions
 {
-
     /**
-     * get GET or POST parameters
+     * Get GET or POST parameters.
+     * 
      * @param string $sParam
+     * 
      * @return string $sParamValue OR false
      */
     public static function getRequestParameter($sParam)
@@ -30,8 +31,9 @@ class Functions
     }
 
     /**
-     * autoloads all php files in $directoryPath (not recursive)
+     * Autoloads all php files in $directoryPath (not recursive)
      * auto include all files in given directory
+     * 
      * @param string $directoryPath
      */
     public static function includeDir($directoryPath)
@@ -45,5 +47,18 @@ class Functions
             $i++;
         }
     }
-
+    
+    /**
+     * Date string converter for dates loaded from database and shown in templates, mails etc.
+     * 
+     * @param string $sDate Date formated like 2000-12-24
+     * 
+     * @return string $sGermanDate Date formated like 24.12.2000
+     */
+    public static function convertMysqlDate($sDate)
+    {
+        $aD = explode("-", $sDate);
+        $sGermanDate = sprintf("%02d.%02d.%04d", $aD[2], $aD[1], $aD[0]);
+        return $sGermanDate;
+    }
 }
