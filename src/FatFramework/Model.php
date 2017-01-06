@@ -111,10 +111,13 @@ class Model
             $sQuery .= " ORDER BY " . $sOrderBy;
         }
         $sql = mysql_query($sQuery);
-        while (($oRow = mysql_fetch_object($sql)) != false) {
+        while (is_resource($sql) && ($oRow = mysql_fetch_object($sql)) != false) {
             $oDataset = new $this;
             $oDataset->loadById($oRow->id, $blAdditionalValues);
             $aRows[] = $oDataset;
+        }
+        if (empty($aRows)) {
+            $aRows = false;
         }
         return $aRows;
     }
