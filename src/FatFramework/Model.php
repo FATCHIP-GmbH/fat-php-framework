@@ -5,10 +5,8 @@ namespace FatFramework;
 class Model
 {
     /**
-     * Copy a data row
-     * 
+     * copy a data row
      * @param int $id
-     * 
      * @return int $id new ID
      */
     public function copy($id){
@@ -19,11 +17,8 @@ class Model
     }
     
     /**
-     * Delete dataset
-     * 
-     * @param string $id ID of dataset to delete
-     * 
-     * @return void
+     * delete dataset
+     * @param integer $id
      */
     public function delete($id)
     {
@@ -32,9 +27,8 @@ class Model
     }
     
     /**
-     * Overwrite this with your model extension
-     * 
-     * @return string Tablename
+     * overwrite this with your model extension
+     * @return string
      */
     public function getTableName()
     {
@@ -42,9 +36,7 @@ class Model
     }
     
     /**
-     * Insert new dataset
-     * 
-     * @return void
+     * insert new dataset
      */
     public function insert()
     {
@@ -66,40 +58,21 @@ class Model
         $this->id = mysql_insert_id();
     }
     
-    /**
-     * Loads a dataset by its primary identifier.
-     * 
-     * @param string  $id                 ID of the dataset to load
-     * @param boolean $blAdditionalValues Load related table data true or false
-     * 
-     * @return boolean $blSuccess True or false
-     */ 
     public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
         
-        $sQuery = "SELECT * FROM " . $this->getTableName();
-        if ($id) {
-            $sQuery .= " WHERE id = '" . $id . "'";
-        }
+        $sQuery = "SELECT * FROM " . $this->getTableName() . " WHERE id = '".$id."'";
         $sQuery .= " LIMIT 1";
         $sql = mysql_query($sQuery);
         $oResult = mysql_fetch_object($sql);
         if (is_object($oResult)) {
             $this->assign($oResult);
             $blSuccess = true;
-        } else {
-            echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
-            exit;
         }
         
         return $blSuccess;
     }
     
-    /**
-     * Loads an array of dataset-objects
-     * 
-     * @return array $aRows Array of dataset-objects
-     */
     public function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
     {
         $aRows = array();
@@ -111,18 +84,19 @@ class Model
             $sQuery .= " ORDER BY " . $sOrderBy;
         }
         $sql = mysql_query($sQuery);
-        while (($oRow = mysql_fetch_object($sql)) != false) {
+        while (is_resource($sql) && ($oRow = mysql_fetch_object($sql)) != false) {
             $oDataset = new $this;
             $oDataset->loadById($oRow->id, $blAdditionalValues);
-            $aRows[] = $oDataset;
+            $aRows[$oRow->id] = $oDataset;
+        }
+        if (empty($aRows)) {
+            $aRows = false;
         }
         return $aRows;
     }
     
     /**
-     * Either insert or update dataset
-     * 
-     * @return void
+     * either insert or update dataset
      */
     public function save()
     {
@@ -134,9 +108,7 @@ class Model
     }
     
     /**
-     * Update dataset
-     * 
-     * @return void
+     * update dataset
      */
     public function update()
     {
@@ -155,12 +127,7 @@ class Model
         mysql_query($sql);
     }
     
-    /**
-     * Assign database result as object-properties.
-     * 
-     * @return void
-     */
-    protected function assign($arrayOrObject)
+    public function assign($arrayOrObject)
     {
         if(is_array($arrayOrObject) || is_object($arrayOrObject)){
             foreach ($arrayOrObject as $key => $value) {
@@ -169,4 +136,3 @@ class Model
         }
     }
 }
-
