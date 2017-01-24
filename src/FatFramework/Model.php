@@ -148,9 +148,9 @@ class Model
         foreach ($this as $property => $value) {
             if ($first) {
                 $first = false;
-                $sql .= " $property='" . mysql_escape_string($value) . "'";
+                $sql .= " $property='" . mysql_real_escape_string($value) . "'";
             } else {
-                $sql .= ", $property='" . mysql_escape_string($value) . "'";
+                $sql .= ", $property='" . mysql_real_escape_string($value) . "'";
             }
         }
         $sql .= "WHERE id = '" . $this->id . "'";
