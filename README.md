@@ -1,5 +1,7 @@
 #FatFramework Components
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Bugfighter/framework-components/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Bugfighter/framework-components/?branch=master)
+
 Installing
 ==========
 
