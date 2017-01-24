@@ -7,7 +7,7 @@ class Language
 
     static function getTranslation($identifier, $sLang = false)
     {
-        if (!$sLang){
+        if (!$sLang) {
             $sLang = "En";
         }
         $sTranslatedString = $identifier . ' not found';

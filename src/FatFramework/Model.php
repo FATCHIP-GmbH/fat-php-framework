@@ -9,9 +9,9 @@ class Model
      * 
      * @param int $id
      * 
-     * @return int $id new ID
+     * @return boolean $id new ID
      */
-    public function copy($id){
+    public function copy($id) {
         $this->loadById($id);
         $this->id = false;
         $this->save();
@@ -72,7 +72,7 @@ class Model
      * @param string  $id                 ID of the dataset to load
      * @param boolean $blAdditionalValues Load related table data true or false
      * 
-     * @return boolean $blSuccess True or false
+     * @return null|boolean $blSuccess True or false
      */ 
     public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
@@ -88,7 +88,7 @@ class Model
             $this->assign($oResult);
             $blSuccess = true;
         } else {
-            echo "ERROR: Could not load " . $this->getTableName() . " with given id: ".$id."!";
+            echo "ERROR: Could not load " . $this->getTableName() . " with given id: " . $id . "!";
             exit;
         }
         
@@ -148,9 +148,9 @@ class Model
         foreach ($this as $property => $value) {
             if ($first) {
                 $first = false;
-                $sql .= " $property='".mysql_escape_string($value)."'";
+                $sql .= " $property='" . mysql_escape_string($value) . "'";
             } else {
-                $sql .= ", $property='".mysql_escape_string($value)."'";
+                $sql .= ", $property='" . mysql_escape_string($value) . "'";
             }
         }
         $sql .= "WHERE id = '" . $this->id . "'";
@@ -165,7 +165,7 @@ class Model
      */
     protected function assign($arrayOrObject)
     {
-        if(is_array($arrayOrObject) || is_object($arrayOrObject)){
+        if (is_array($arrayOrObject) || is_object($arrayOrObject)) {
             foreach ($arrayOrObject as $key => $value) {
                 $this->$key = $value;
             }
