@@ -1,6 +1,6 @@
-#FatFramework Components
+#FatFramework
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Bugfighter/framework-components/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Bugfighter/framework-components/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/FATCHIP-GmbH/fat-php-framework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/FATCHIP-GmbH/fat-php-framework/?branch=master)
 
 Installing
 ==========
@@ -11,10 +11,10 @@ Add this to your composer.json:
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/FATCHIP/framework-components"
+        "url": "https://github.com/FATCHIP-GmbH/fat-php-framework"
     }
 ],
 "require": {
-    "FATCHIP/framework-components": "dev-master"
+    "FATCHIP-GmbH/fat-php-framework": "dev-master"
 }
 ```
