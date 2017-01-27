@@ -17,18 +17,20 @@ class Model
         $this->save();
         return $this->id;
     }
-    
+
     /**
-     * Delete dataset
-     * 
-     * @param string $id ID of dataset to delete
-     * 
+     * Delete Dataset
+     *
+     * @param $id
      * @return void
      */
     public function delete($id)
     {
-        $sQuery = "DELETE FROM " . $this->getTableName() . " WHERE id = '" . $id . "'";
-        mysql_query($sQuery);
+        $sSql = "DELETE FROM " . $this->getTableName() . " WHERE id = :id";
+        $dbc = FatFramework/Registry::get('dbc');
+        $stmt = $dbc->prepare($sSql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
     }
     
     /**
@@ -46,8 +48,15 @@ class Model
      * 
      * @return void
      */
+    /**
+     * Insert New Dataset
+     *
+     * @param void
+     * @return void
+     */
     public function insert()
     {
+        $aParam = array();
         $first = true;
         $sKeys = "";
         $sValues = "";
@@ -59,31 +68,40 @@ class Model
                 $sValues .= ", ";
             }
             $sKeys .= $key;
-            $sValues .= "'" . $value . "'";
+            $sValues .= ":" . $key;
+            $aParam[$key] = $value;
+
         }
         $sql = "INSERT INTO " . $this->getTableName() . " (" . $sKeys . ") VALUES (" . $sValues . ")";
-        mysql_query($sql);
-        $this->id = mysql_insert_id();
+        $dbc = FatFramework/Registry::get('dbc');
+        $stmt = $dbc->prepare($sql);
+        $stmt->execute($aParam);
     }
-    
+
     /**
      * Loads a dataset by its primary identifier.
      * 
-     * @param string  $id                 ID of the dataset to load
-     * @param boolean $blAdditionalValues Load related table data true or false
-     * 
-     * @return null|boolean $blSuccess True or false
-     */ 
+     * @param bool $id /ID of the dataset to load
+     * @param bool $blAdditionalValues/ Load related table data true or false
+     * @return  bool $blSuccess True or false
+     */
     public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
-        
+
         $sQuery = "SELECT * FROM " . $this->getTableName();
         if ($id) {
-            $sQuery .= " WHERE id = '" . $id . "'";
+            $sQuery .= " WHERE id = :id";
         }
         $sQuery .= " LIMIT 1";
-        $sql = mysql_query($sQuery);
-        $oResult = mysql_fetch_object($sql);
+        $dbc = FatFramework/Registry::get('dbc');
+        $stmt = $dbc->prepare($sQuery);
+
+        if ($id){
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $oResult = $stmt->fetchObject();
         if (is_object($oResult)) {
             $this->assign($oResult);
             $blSuccess = true;
@@ -91,33 +109,35 @@ class Model
             echo "ERROR: Could not load " . $this->getTableName() . " with given id: " . $id . "!";
             exit;
         }
-        
+
         return $blSuccess;
     }
     
     /**
      * Loads an array of dataset-objects
-     * 
-     * @return array $aRows Array of dataset-objects
+     *
+     * @param bool $sAdditionalWhere
+     * @param bool $sOrderBy
+     * @return array
      */
     public function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
     {
         $aRows = array();
-        $sQuery = "SELECT id FROM " . $this->getTableName();
+        $sQuery = "SELECT * FROM " . $this->getTableName();
         if ($sAdditionalWhere != false) {
             $sQuery .= " WHERE " . $sAdditionalWhere;
         }
         if ($sOrderBy != false) {
             $sQuery .= " ORDER BY " . $sOrderBy;
         }
-        $sql = mysql_query($sQuery);
-        while (is_resource($sql) && ($oRow = mysql_fetch_object($sql)) != false) {
+        $dbc = FatFramework/Registry::get('dbc');
+        $stmt = $dbc->prepare($sQuery);
+        $stmt->execute();
+
+        while ($oRow = $stmt->fetchObject()) {
             $oDataset = new $this;
-            $oDataset->loadById($oRow->id, $blAdditionalValues);
+            $oDataset->loadByID($oRow->id, $blAdditionalValues);
             $aRows[] = $oDataset;
-        }
-        if (empty($aRows)) {
-            $aRows = false;
         }
         return $aRows;
     }
@@ -138,24 +158,29 @@ class Model
     
     /**
      * Update dataset
-     * 
+     *
+     * @param void
      * @return void
      */
     public function update()
     {
+        $aParam = array();
         $sql = "UPDATE " . $this->getTableName() . " SET";
         $first = true;
         foreach ($this as $property => $value) {
             if ($first) {
                 $first = false;
-                $sql .= " $property='" . mysql_real_escape_string($value) . "'";
+                $sql .= " $property=:$property";
             } else {
-                $sql .= ", $property='" . mysql_real_escape_string($value) . "'";
+                $sql .= ", $property=:$property";
             }
+            $aParam[":$property"] = $value;
         }
-        $sql .= "WHERE id = '" . $this->id . "'";
-        
-        mysql_query($sql);
+        $sql .= " WHERE id = :id";
+        $aParam[":id"] = $this-id;
+        $dbc = FatFramework/Registry::get('dbc');
+        $stmt = $dbc->prepare($sql);
+        $stmt->execute($aParam);
     }
     
     /**
