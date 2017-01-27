@@ -18,7 +18,7 @@ class Functions
         $newCreditCard = substr($cc, -4);
 
         for ($i = $cc_length - 5; $i >= 0; $i--) {
-            if ((($i + 1) - $cc_length) % 4 == 0) {
+            if ((($i + 1) - $cc_length)%4 == 0) {
                 $newCreditCard = $sDivider . $newCreditCard;
             }
             $newCreditCard = $cc[$i] . $newCreditCard;

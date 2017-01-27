@@ -83,7 +83,7 @@ class Model
      * 
      * @param bool $id /ID of the dataset to load
      * @param bool $blAdditionalValues/ Load related table data true or false
-     * @return  bool $blSuccess True or false
+     * @return  null|boolean $blSuccess True or false
      */
     public function loadById($id = false, $blAdditionalValues = false) {
         $blSuccess = false;
@@ -96,7 +96,7 @@ class Model
         $dbc = FatFramework/Registry::get('dbc');
         $stmt = $dbc->prepare($sQuery);
 
-        if ($id){
+        if ($id) {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         }
 
@@ -177,7 +177,7 @@ class Model
             $aParam[":$property"] = $value;
         }
         $sql .= " WHERE id = :id";
-        $aParam[":id"] = $this-id;
+        $aParam[":id"] = $this - id;
         $dbc = FatFramework/Registry::get('dbc');
         $stmt = $dbc->prepare($sql);
         $stmt->execute($aParam);
