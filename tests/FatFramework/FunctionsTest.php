@@ -9,7 +9,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     {
         $s16DigitNum = "1234567890123456";
         $sFormattedNum = Functions::formatCreditCardNum($s16DigitNum);
-        $this->assertEquals('24.12.2001', $sFormattedNum);
+        $this->assertEquals('1234-5678-9012-3456', $sFormattedNum);
     }
 
     public function testFormatMysqlDate()
