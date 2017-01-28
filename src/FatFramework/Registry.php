@@ -11,6 +11,7 @@ class Registry
 
     /**
      * @param $key
+     *
      * @return mixed|null
      */
 

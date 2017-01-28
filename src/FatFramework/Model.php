@@ -7,9 +7,9 @@ class Model
     /**
      * Copy a data row
      * 
-     * @param int $id
+     * @param int $id Id of row to copy
      * 
-     * @return boolean $id new ID
+     * @return boolean $id New Id
      */
     public function copy($id) {
         $this->loadById($id);
@@ -19,15 +19,16 @@ class Model
     }
 
     /**
-     * Delete Dataset
+     * Delete a row
      *
-     * @param $id
+     * @param $id Id of row to delete
+     *
      * @return void
      */
     public function delete($id)
     {
         $sSql = "DELETE FROM " . $this->getTableName() . " WHERE id = :id";
-        $dbc = FatFramework/Registry::get('dbc');
+        $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sSql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -36,7 +37,7 @@ class Model
     /**
      * Overwrite this with your model extension
      * 
-     * @return string Tablename
+     * @return string Table name
      */
     public function getTableName()
     {
@@ -44,14 +45,8 @@ class Model
     }
     
     /**
-     * Insert new dataset
-     * 
-     * @return void
-     */
-    /**
-     * Insert New Dataset
+     * Insert new row
      *
-     * @param void
      * @return void
      */
     public function insert()
@@ -73,16 +68,17 @@ class Model
 
         }
         $sql = "INSERT INTO " . $this->getTableName() . " (" . $sKeys . ") VALUES (" . $sValues . ")";
-        $dbc = FatFramework/Registry::get('dbc');
+        $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sql);
         $stmt->execute($aParam);
     }
 
     /**
-     * Loads a dataset by its primary identifier.
+     * Loads a row by its primary identifier.
      * 
-     * @param bool $id /ID of the dataset to load
-     * @param bool $blAdditionalValues/ Load related table data true or false
+     * @param bool $id                  ID of the row to load
+     * @param bool $blAdditionalValues  Load related table data true or false
+     *
      * @return  null|boolean $blSuccess True or false
      */
     public function loadById($id = false, $blAdditionalValues = false) {
@@ -93,7 +89,7 @@ class Model
             $sQuery .= " WHERE id = :id";
         }
         $sQuery .= " LIMIT 1";
-        $dbc = FatFramework/Registry::get('dbc');
+        $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sQuery);
 
         if ($id) {
@@ -114,11 +110,13 @@ class Model
     }
     
     /**
-     * Loads an array of dataset-objects
+     * Loads an array of objects
      *
-     * @param bool $sAdditionalWhere
-     * @param bool $sOrderBy
-     * @return array
+     * @param bool $sAdditionalWhere    Optional WHERE statement in SQL
+     * @param bool $sOrderBy            Optional SORT statement
+     * @param bool $blAdditionalValues  Should joined objects be loaded
+     *
+     * @return array $aRows
      */
     public function loadList($sAdditionalWhere = false, $sOrderBy = false, $blAdditionalValues = false)
     {
@@ -130,7 +128,7 @@ class Model
         if ($sOrderBy != false) {
             $sQuery .= " ORDER BY " . $sOrderBy;
         }
-        $dbc = FatFramework/Registry::get('dbc');
+        $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sQuery);
         $stmt->execute();
 
@@ -143,7 +141,7 @@ class Model
     }
     
     /**
-     * Either insert or update dataset
+     * Either insert or update row
      * 
      * @return void
      */
@@ -157,9 +155,8 @@ class Model
     }
     
     /**
-     * Update dataset
+     * Update a row
      *
-     * @param void
      * @return void
      */
     public function update()
@@ -178,14 +175,16 @@ class Model
         }
         $sql .= " WHERE id = :id";
         $aParam[":id"] = $this - id;
-        $dbc = FatFramework/Registry::get('dbc');
+        $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sql);
         $stmt->execute($aParam);
     }
     
     /**
-     * Assign database result as object-properties.
-     * 
+     * Assign database result as object-properties
+     *
+     * @param mixed $arrayOrObject Array or object
+     *
      * @return void
      */
     protected function assign($arrayOrObject)
