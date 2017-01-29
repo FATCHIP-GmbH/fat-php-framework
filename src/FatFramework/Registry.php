@@ -11,6 +11,7 @@ class Registry
 
     /**
      * @param $key
+     *
      * @return mixed|null
      */
 
@@ -25,6 +26,6 @@ class Registry
      */
     public static function set($key, $object)
     {
-        self::$items[$key]=$object;
+        self::$items[$key] = $object;
     }
 }

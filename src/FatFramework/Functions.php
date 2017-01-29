@@ -5,12 +5,12 @@ namespace FatFramework;
 class Functions
 {
     /**
-     * String Trasformer
-     * Formats a 16-digit creditcard number into 4-digit-blocks
+     * String Transformer
+     * Formats a 16-digit credit card number into 4-digit-blocks
      * 
-     * @param string $cc 16-digit creditcardnum
+     * @param string $cc 16-digit credit cardnum
      * 
-     * @return string 4-digit-block formatted creditcardnum
+     * @return string 4-digit-block formatted credit cardnum
      */
     public static function formatCreditCardNum($cc) {
         $sDivider = ' ';
@@ -18,7 +18,7 @@ class Functions
         $newCreditCard = substr($cc, -4);
 
         for ($i = $cc_length - 5; $i >= 0; $i--) {
-            if ((($i + 1) - $cc_length) % 4 == 0) {
+            if ((($i + 1) - $cc_length)%4 == 0) {
                 $newCreditCard = $sDivider . $newCreditCard;
             }
             $newCreditCard = $cc[$i] . $newCreditCard;
@@ -28,13 +28,13 @@ class Functions
     }
     
     /**
-     * String Trasformer
+     * String Transformer
      * Date string converter for dates loaded from database 
      * and shown in templates, mails etc.
      * 
-     * @param string $sDate Date formated like 2000-12-24
+     * @param string $sDate Date formatted like 2000-12-24
      * 
-     * @return string $sGermanDate Date formated like 24.12.2000
+     * @return string $sGermanDate Date formatted like 24.12.2000
      */
     public static function formatMysqlDate($sDate)
     {
@@ -71,7 +71,7 @@ class Functions
     }
 
     /**
-     * Autoloads all php files in $directoryPath (not recursive)
+     * Auto loads all php files in $directoryPath (not recursive)
      * auto include all files in given directory
      * 
      * @param string $directoryPath
