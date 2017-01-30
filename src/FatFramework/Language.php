@@ -11,10 +11,12 @@ class Language
             $sLang = "En";
         }
         $sTranslatedString = $identifier . ' not found';
+
         $sLangLanguage = "Language" . $sLang;
-        $oLanguage = new $sLangLanguage();
-        
-        if (isset($oLanguage->$identifier)) {
+        if (class_exists($sLangLanguage)){
+            $oLanguage = new $sLangLanguage();
+        }
+        if (isset($oLanguage) && isset($oLanguage->$identifier)) {
             $sTranslatedString = $oLanguage->$identifier;
         } 
         

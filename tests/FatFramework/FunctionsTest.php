@@ -27,6 +27,18 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $foo);
     }
 
+    public function testIncludeDir()
+    {
+        mkdir(dirname(__FILE__) . '/test');
+        $sDir = dirname(__FILE__) . "/test/";
+        file_put_contents($sDir . "myTest.php", "<?php \n class myTest { \n public \$foo = 'bar'; \n } \n");
+        Functions::includeDir($sDir);
+        $oMyTest = new \myTest();
+        $this->assertEquals('bar', $oMyTest->foo);
+        unlink($sDir . "myTest.php");
+        rmdir($sDir);
+    }
+
     public function testReduceHtml()
     {
         $sHtml = " <html>   </html>  \n";
