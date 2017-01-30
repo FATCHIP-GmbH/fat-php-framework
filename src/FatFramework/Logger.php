@@ -51,8 +51,18 @@ class Logger {
      */
     const DEBUG = 'debug';
 
+    /**
+     * Log a message to a sLogFilename in PHP's error_log directory.
+     *
+     * @param string $sLogMessage  The message to log
+     * @param string $sLogFilename The filename to log to (optional)
+     * @param string $sSeverity    The severity of the message (optional)
+     *
+     * @return void
+     */
     public static function logToFile($sLogMessage, $sLogFilename = "default.log", $sSeverity = self::INFO) {
-        $sLogFilePath = dirname(__FILE__) . "/../../../log/";
+        $sPhpLogFile = ini_get('error_log');
+        $sLogFilePath = dirname($sPhpLogFile);
         $sLogEntry = "[" . date("Y-m-d H:i:s") . " Europe/Berlin] " . $sSeverity . ": " . $sLogMessage . "\n";
         file_put_contents($sLogFilePath . $sLogFilename, $sLogEntry, FILE_APPEND);
     }
