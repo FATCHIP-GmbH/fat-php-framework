@@ -1,7 +1,7 @@
 {
-    "name": "fatchip/framework-components",
+    "name": "FATCHIP-GmbH/fat-php-framework",
     "type": "library",
-    "description": "FatFramework Components",
+    "description": "FatFramework",
     "license": "GNU v3",
     "authors": [{
         "name": "Hendrik Bahr",

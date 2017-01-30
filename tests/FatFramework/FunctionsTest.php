@@ -1,5 +1,6 @@
 <?php
 
+include_once dirname(__FILE__) . "/../../autoload.inc.php";
 use FatFramework\Functions;
 
 class FunctionsTest extends PHPUnit_Framework_TestCase
@@ -9,7 +10,7 @@ class FunctionsTest extends PHPUnit_Framework_TestCase
     {
         $s16DigitNum = "1234567890123456";
         $sFormattedNum = Functions::formatCreditCardNum($s16DigitNum);
-        $this->assertEquals('1234-5678-9012-3456', $sFormattedNum);
+        $this->assertEquals('1234 5678 9012 3456', $sFormattedNum);
     }
 
     public function testFormatMysqlDate()
