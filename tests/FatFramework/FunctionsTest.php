@@ -19,4 +19,18 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $sDateDe = Functions::formatMysqlDate($sDateEn);
         $this->assertEquals('24.12.2001', $sDateDe);
     }
+
+    public function testGetRequestParameter()
+    {
+        $_REQUEST['foo'] = 'bar';
+        $foo = Functions::getRequestParameter('foo');
+        $this->assertEquals('bar', $foo);
+    }
+
+    public function testReduceHtml()
+    {
+        $sHtml = " <html>   </html>  \n";
+        $sReducedHtml = Functions::reduceHtml($sHtml);
+        $this->assertEquals("<html>   </html>\n", $sReducedHtml);
+    }
 }
