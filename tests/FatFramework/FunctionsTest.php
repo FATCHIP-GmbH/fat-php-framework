@@ -2,7 +2,8 @@
 
 namespace FatFramework;
 
-class FunctionsTest extends PHPUnit_Framework_TestCase
+
+class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testFormatCreditCardNum()
