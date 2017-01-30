@@ -1,6 +1,7 @@
 <?php
 
 namespace FatFramework;
+use \PDO;
 
 class Model
 {
