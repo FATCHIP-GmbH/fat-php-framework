@@ -1,7 +1,6 @@
 <?php
 
-include_once dirname(__FILE__) . "/../../autoload.inc.php";
-use FatFramework\Functions;
+namespace FatFramework;
 
 class FunctionsTest extends PHPUnit_Framework_TestCase
 {
