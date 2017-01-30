@@ -1,15 +1,12 @@
 <phpunit bootstrap="autoload.inc.php">
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./</directory>
+        </whitelist>
+    </filter>
     <testsuites>
         <testsuite name="FatFramework">
-            <directory>tests/FatFramework</directory>
+            <directory>./tests/FatFramework/</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src/FatFramework/</directory>
-        </whitelist>
-        <blacklist>
-            <directory suffix=".php">tests/FatFramework/</directory>
-        </blacklist>
-    </filter>
 </phpunit>

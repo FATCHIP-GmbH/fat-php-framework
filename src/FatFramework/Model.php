@@ -188,7 +188,7 @@ class Model
      *
      * @return void
      */
-    protected function assign($arrayOrObject)
+    public function assign($arrayOrObject)
     {
         if (is_array($arrayOrObject) || is_object($arrayOrObject)) {
             foreach ($arrayOrObject as $key => $value) {
