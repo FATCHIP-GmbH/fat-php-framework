@@ -4,25 +4,27 @@ namespace FatFramework;
 
 class Language
 {
-
     /**
-     * @param string $identifier
+     * Translate a given identifier in the given language.
+     * Requires an existing language class.
+     *
+     * @param string $sIdentifier
+     * @param string $sLang
+     *
+     * @return string $sTranslatedString
      */
-    static function getTranslation($identifier, $sLang = false)
+    public static function getTranslation($sIdentifier, $sLang = 'En')
     {
-        if (!$sLang) {
-            $sLang = "En";
-        }
-        $sTranslatedString = $identifier . ' not found';
+        $sTranslatedString = $sIdentifier . ' not found';
 
         $sLangLanguage = "Language" . $sLang;
-        if (class_exists($sLangLanguage)) {
+        if (class_exists($sLangLanguage)){
             $oLanguage = new $sLangLanguage();
+            if (isset($oLanguage->$sIdentifier)) {
+                $sTranslatedString = $oLanguage->$sIdentifier;
+            }
         }
-        if (isset($oLanguage) && isset($oLanguage->$identifier)) {
-            $sTranslatedString = $oLanguage->$identifier;
-        } 
-        
+
         return $sTranslatedString;
     }
 
