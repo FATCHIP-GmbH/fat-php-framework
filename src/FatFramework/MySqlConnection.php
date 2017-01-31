@@ -17,7 +17,7 @@ class MySqlConnection
         try {
             $dbc = new PDO($sDsn, $sUser, $sPassword);
             $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        }catch (\PDOException $e)
+        } catch (\PDOException $e)
         {
             echo 'Verbindung fehlgeschlagen: ' . $e->getMessage();
         }
