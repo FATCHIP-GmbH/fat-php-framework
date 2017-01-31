@@ -12,7 +12,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         Registry::set('myTestClass', $myTestClass);
 
         $myTestResult = Registry::get('myTestClass');
-        $this->assertEquals($myTestResult->myProperty,"FATCHIP");
+        $this->assertEquals($myTestResult->myProperty, "FATCHIP");
     }
 
     public function testSet()
@@ -22,6 +22,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         Registry::set('myTestClass', $myTestClass);
 
         $myTestResult = Registry::get('myTestClass');
-        $this->assertEquals($myTestResult->myProperty,"FATCHIP");
+        $this->assertEquals($myTestResult->myProperty, "FATCHIP");
     }
 }
