@@ -51,23 +51,19 @@ class Functions
      * 
      * @return string $sParamValue Parameter-value OR false
      */
-    public static function getRequestParameter($sParam)
-    {
-        $sParamValue = false;
-
-        if (isset($_REQUEST[$sParam])) {
-            $sParamValue = $_REQUEST[$sParam];
+    public static function getRequestParameter($param) {
+        $return = false;
+        if (isset($_REQUEST[$param])) {
+            $paramValue = $_REQUEST[$param];
         }
-
-        if (is_string($sParamValue)) {
-            $sParamValue = str_replace(
-                array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"), 
-                array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'), 
-                $sParamValue
-                );
+        if (isset($paramValue) && is_string($paramValue)) {
+            $return = self::stripString($paramValue);
+        } elseif (isset($paramValue) && is_array($paramValue)) {
+            foreach ($paramValue AS $key => $value) {
+                $return[$key] = self::stripString($value);
+            }
         }
-
-        return $sParamValue;
+        return $return;
     }
 
     /**
@@ -107,5 +103,21 @@ class Functions
             }
         }
         return $sCleanedHtml;
+    }
+    
+    /**
+     * Strip evil chars from a parameter-string to avoid hacking.
+     *
+     * @param string $sString
+     *
+     * @return string $sStrippedString
+     */
+    public static function stripString($sString) {
+        $sStrippedString = str_replace(
+            array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"), 
+            array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'), $sString
+        );
+
+        return $sStrippedString;
     }
 }
