@@ -72,6 +72,7 @@ class Model
         $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sql);
         $stmt->execute($aParam);
+        $this->id = $dbc->lastInsertId();
     }
 
     /**
