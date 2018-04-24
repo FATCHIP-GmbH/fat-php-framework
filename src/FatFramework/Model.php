@@ -176,7 +176,7 @@ class Model
             $aParam[":$property"] = $value;
         }
         $sql .= " WHERE id = :id";
-        $aParam[":id"] = $this - id;
+        $aParam[":id"] = $this->id;
         $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sql);
         $stmt->execute($aParam);
