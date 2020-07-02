@@ -3,7 +3,7 @@
 namespace FatFramework;
 
 
-class LanguageTest extends \PHPUnit_Framework_TestCase
+class LanguageTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetTranslation()
     {

@@ -3,7 +3,7 @@
 namespace FatFramework;
 
 
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetAndSet()
     {
