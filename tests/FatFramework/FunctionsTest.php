@@ -22,15 +22,32 @@ class FunctionsTest extends \PHPUnit\Framework\TestCase
 
     public function testGetRequestParameter()
     {
+    	// Test string parameter
         $_REQUEST['foo'] = 'bar';
         $foo = Functions::getRequestParameter('foo');
         $this->assertEquals('bar', $foo);
+
+	    // Test array parameter
+	    $_REQUEST['aData'] = ['foo','bar'];
+	    $foo = Functions::getRequestParameter('aData');
+	    $this->assertEquals('foo', $foo[0]);
+
+	    // Test SQL injection string parameter
+	    $_REQUEST['foo'] = 'ba"r';
+	    $foo = Functions::getRequestParameter('foo');
+	    $this->assertEquals('ba&quot;r', $foo);
+
+	    // Test SQL injection array parameter
+	    $_REQUEST['foo'] = ['ba"r', "fo'o"];
+	    $foo = Functions::getRequestParameter('foo');
+	    $this->assertEquals('ba&quot;r', $foo[0]);
+	    $this->assertEquals('fo&#039;o', $foo[1]);
     }
 
     public function testIncludeDir()
     {
-        mkdir(dirname(__FILE__) . '/test');
-        $sDir = dirname(__FILE__) . "/test/";
+	    $sDir = dirname(__FILE__) . "/testIncludeDir/";
+        mkdir($sDir);
         file_put_contents($sDir . "myTest.php", "<?php \n class myTest { \n public \$foo = 'bar'; \n } \n");
         Functions::includeDir($sDir);
         $oMyTest = new \myTest();
