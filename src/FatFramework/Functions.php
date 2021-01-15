@@ -120,4 +120,18 @@ class Functions
 
         return $sStrippedString;
     }
+
+    /**
+     * Strip unwanted chars from a filename.
+     *
+     * @param string $sFilename
+     * @return string
+     */
+    public static function cleanFilename(string $sFilename): string
+    {
+        return str_replace(
+            array('+', ' ','ä','Ä','ü','Ü','ö','Ö','ß'),
+            array('','','ae','ae','ue','ue','oe','oe', 'ss'), $sFilename
+        );
+    }
 }
