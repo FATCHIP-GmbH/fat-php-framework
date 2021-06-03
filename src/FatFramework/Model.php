@@ -197,5 +197,23 @@ class Model
             }
         }
     }
+
+    /**
+     * Get number of entries of a table
+     *
+     * @param $sAdditionalWhere
+     * @return mixed
+     */
+    public function getTotalNrOfRecords($sAdditionalWhere ){
+        $sQuery = "SELECT COUNT(*) as records FROM " . $this->getTableName();
+        if ($sAdditionalWhere != false) {
+            $sQuery .= " WHERE " . $sAdditionalWhere;
+        }
+
+        $dbc = Registry::get('dbc');
+        $stmt = $dbc->prepare($sQuery);
+        $stmt->execute();
+        return $stmt->fetchObject();
+    }
 }
 
