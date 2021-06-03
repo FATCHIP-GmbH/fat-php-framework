@@ -213,7 +213,7 @@ class Model
         $dbc = Registry::get('dbc');
         $stmt = $dbc->prepare($sQuery);
         $stmt->execute();
-        return $stmt->fetchObject();
+        return $stmt->fetchColumn();
     }
 }
 
