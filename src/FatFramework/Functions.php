@@ -130,8 +130,8 @@ class Functions
     public static function cleanFilename(string $sFilename): string
     {
         return str_replace(
-            array('+', ' ','ä','Ä','ü','Ü','ö','Ö','ß'),
-            array('','','ae','ae','ue','ue','oe','oe', 'ss'), $sFilename
+            array('+', ' ','ä','Ä','ü','Ü','ö','Ö','ß','&amp;', '&', '.'),
+            array('','','ae','ae','ue','ue','oe','oe', 'ss','', '', ''), $sFilename
         );
     }
 }
